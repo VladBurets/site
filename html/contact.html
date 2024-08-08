@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://kit.fontawesome.com/eaa4609b2f.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="../css/style.css" />
+	<title>Контакты</title>
+</head>
+
+<body>
+	<nav>
+		<div class="container">
+			<div class="logo">
+				<i class="fas fa-globe fa-3x"></i>
+				<h1>Sport<span>News</span></h1>
+			</div>
+			<div class="options">
+				<a href="/index.html" class="current">Главная</a>
+				<a href="/html/about.html">О нас</a>
+				<a href="/html/contact.html">Контакты</a>
+			</div>
+		</div>
+	</nav>
+
+
+	<div class="feedback">
+		<div class="container">
+			<form class="feedback-form" id="feedback-form">
+				<h2>Обратная связь</h2>
+				<div class="form-group">
+					<label for="name">Имя:</label>
+					<input type="text" id="name-input" name="name" required>
+				</div>
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<input type="email" id="email-input" name="email" required>
+				</div>
+				<div class="form-group">
+					<label for="message">Сообщение:</label>
+					<textarea id="message-input" name="message" required></textarea>
+				</div>
+				<button type="submit">Отправить</button>
+			</form>
+		</div>
+	</div>
+
+	<div class="container">
+		<h2>Отзывы</h2>
+		<div id="theReviews"></div>
+	</div>
+
+
+	<footer>
+		<div class="container">
+			<div class="footer">
+				<article>
+					<h4>Ссылки </h4>
+					<p><a href="">Главная</a></p>
+					<p><a href="">О нас</a></p>
+					<p><a href="">Контакты</a></p>
+				</article>
+
+
+				<div class="copyright">
+					<p>Copyright &copy; 2023 by Vlad Byrets</p>
+				</div>
+			</div>
+	</footer>
+	<script>
+		document
+			.getElementById('feedback-form')
+			.addEventListener('submit', function (event) {
+				event.preventDefault()
+				var name = document.getElementById('name-input').value
+				var message = document.getElementById('message-input').value
+
+				var feedback = {
+					name: name,
+					message: message,
+				}
+
+				var storedFeedback = localStorage.getItem('feedback')
+				var feedbackList = storedFeedback ? JSON.parse(storedFeedback) : []
+
+				feedbackList.push(feedback)
+
+				localStorage.setItem('feedback', JSON.stringify(feedbackList))
+
+				document.getElementById('name-input').value = ''
+				document.getElementById('message-input').value = ''
+
+				renderFeedbackList()
+			})
+
+		function renderFeedbackList() {
+			var feedbackList = JSON.parse(localStorage.getItem('feedback')) || []
+			var feedbackListElement = document.getElementById('theReviews')
+
+			feedbackListElement.innerHTML = ''
+
+			feedbackList.forEach(function (feedback) {
+				var listItem = document.createElement('div')
+				listItem.classList.add('reviewItem')
+				listItem.innerHTML = `<div>
+					<h3><b>Имя: ${feedback.name}</b></h3>
+		<p>Сообщение: ${feedback.message}</p>
+		
+	</div>`
+				feedbackListElement.appendChild(listItem)
+			})
+		}
+
+		renderFeedbackList()
+
+	</script>
+</body>
+
+</html>
